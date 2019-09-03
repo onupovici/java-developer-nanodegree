@@ -1,7 +1,10 @@
 package com.udacity.course3.reviews.controller;
 
-import com.udacity.course3.reviews.model.Product;
-import com.udacity.course3.reviews.repository.ProductRepository;
+import com.udacity.course3.reviews.model.jpa.Product;
+import com.udacity.course3.reviews.model.mongo.ProductMongo;
+import com.udacity.course3.reviews.model.mongo.ReviewMongo;
+import com.udacity.course3.reviews.repository.jpa.ProductRepository;
+import com.udacity.course3.reviews.service.ReviewMongoService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +26,9 @@ public class ProductsController {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private ReviewMongoService reviewMongoService;
 
     /**
      * Creates a product.
@@ -52,7 +58,12 @@ public class ProductsController {
     public ResponseEntity<?> findById(@PathVariable("id") Integer id) {
         Optional<Product> optionalProduct = productRepository.findById(id);
         if (optionalProduct.isPresent()) {
-            return ResponseEntity.ok(optionalProduct.get());
+            // final: get reviews from Mongodb
+            List<ReviewMongo> reviewMongos = reviewMongoService.findAllByProductId(id);
+            // final: update Product with data from both MySQL and Mongo
+            ProductMongo result = new ProductMongo(optionalProduct.get());
+            result.setReviews(reviewMongos);
+            return ResponseEntity.ok(result);
         }
         else {
             throw new HttpServerErrorException(HttpStatus.NOT_FOUND);

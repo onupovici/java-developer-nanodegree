@@ -1,7 +1,7 @@
 package com.udacity.course3.reviews.repository;
 
-import com.udacity.course3.reviews.model.Product;
-import com.udacity.course3.reviews.repository.ProductRepository;
+import com.udacity.course3.reviews.model.jpa.Product;
+import com.udacity.course3.reviews.repository.jpa.ProductRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
