@@ -4,9 +4,9 @@ Supports operations for writing reviews and listing reviews for a product but wi
 ### Prerequisites
 MySQL needs to be installed and configured. Instructions provided separately.
 
-### Run the Code
+### Setup MySQL
 
-* Login to mysql command line
+* Login to MySQL command line
 ```
 $ mysql -u <user> -p
 ```
@@ -16,6 +16,20 @@ $ mysql -u <user> -p
 mysql> create database reviews;
 ```
 
+### Setup MongoDB
+
+* Login to Mongo command line
+```
+$ mongo --port 27017  --authenticationDatabase "admin" -u "<user>" -p
+```
+
+* Create 'reviews' database and collection
+```
+> use reviews
+> db.createCollection("reviews")
+```
+
+### Run the Code
 * Replace username and password with your own mysql username and password in the `src/main/resources/application.properties`
 ```
 spring.datasource.username=<db username goes here>
