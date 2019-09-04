@@ -18,6 +18,11 @@ mysql> create database reviews;
 
 ### Setup MongoDB
 
+* Start Mongo in your local
+```
+$ mongod --auth --config /usr/local/etc/mongod.conf
+```
+
 * Login to Mongo command line
 ```
 $ mongo --port 27017  --authenticationDatabase "admin" -u "<user>" -p

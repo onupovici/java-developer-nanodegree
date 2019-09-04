@@ -66,7 +66,7 @@ public class ProductsController {
             return ResponseEntity.ok(result);
         }
         else {
-            throw new HttpServerErrorException(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 

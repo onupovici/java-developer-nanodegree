@@ -63,7 +63,7 @@ public class CommentsController {
 
             return ResponseEntity.ok(commentMongo);
         }
-        throw new HttpServerErrorException(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -77,13 +77,13 @@ public class CommentsController {
      */
     @RequestMapping(value = "/reviews/{reviewId}", method = RequestMethod.GET)
     @ApiOperation(value = "List comments for a review")
-    public List<?> listCommentsForReview(@PathVariable("reviewId") Integer reviewId) {
+    public ResponseEntity<List<?>> listCommentsForReview(@PathVariable("reviewId") Integer reviewId) {
         Optional<Review> optionalReview = reviewRepository.findById(reviewId);
         if (optionalReview.isPresent()) {
             // midterm: MySQL
             List<Comment> comments = optionalReview.get().getComments();
-            return comments;
+            return ResponseEntity.ok(comments);
         }
-        throw new HttpServerErrorException(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

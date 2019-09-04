@@ -64,7 +64,7 @@ public class ReviewsController {
             return ResponseEntity.ok(reviewMongo);
         }
         else {
-            throw new HttpServerErrorException(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -81,6 +81,11 @@ public class ReviewsController {
         List<Review> reviews = reviewRepository.findByProductId(productId);
         // final: Mongodb
         List<ReviewMongo> reviewsMongo = reviewMongoService.findAllByProductId(productId);
-        return ResponseEntity.ok(reviewsMongo);
+        if (reviewsMongo != null && !reviewsMongo.isEmpty()) {
+            return ResponseEntity.ok(reviewsMongo);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }
