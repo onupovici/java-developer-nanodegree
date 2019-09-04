@@ -1,27 +1,25 @@
-package com.udacity.course3.reviews.model;
+package com.udacity.course3.reviews.model.mongo;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import com.udacity.course3.reviews.model.jpa.Product;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Entity
-@Table(name = "product")
-public class Product {
+public class ProductMongo {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "product_name")
-    @NotNull
     private String productName;
 
-    @Column(name = "created_time")
     private LocalDateTime createdTime;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    private List<Review> reviews;
+    private List<ReviewMongo> reviews;
+
+    public ProductMongo(Product product) {
+        this.id = product.getId();
+        this.productName = product.getProductName();
+        this.createdTime = product.getCreatedTime();
+    }
 
     public int getId() {
         return id;
@@ -47,11 +45,11 @@ public class Product {
         this.createdTime = createdTime;
     }
 
-    public List<Review> getReviews() {
+    public List<ReviewMongo> getReviews() {
         return reviews;
     }
 
-    public void setReviews(List<Review> reviews) {
+    public void setReviews(List<ReviewMongo> reviews) {
         this.reviews = reviews;
     }
 }

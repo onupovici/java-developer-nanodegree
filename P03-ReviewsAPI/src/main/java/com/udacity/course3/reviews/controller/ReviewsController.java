@@ -1,9 +1,11 @@
 package com.udacity.course3.reviews.controller;
 
-import com.udacity.course3.reviews.model.Product;
-import com.udacity.course3.reviews.model.Review;
-import com.udacity.course3.reviews.repository.ProductRepository;
-import com.udacity.course3.reviews.repository.ReviewRepository;
+import com.udacity.course3.reviews.model.jpa.Product;
+import com.udacity.course3.reviews.model.jpa.Review;
+import com.udacity.course3.reviews.model.mongo.ReviewMongo;
+import com.udacity.course3.reviews.repository.jpa.ProductRepository;
+import com.udacity.course3.reviews.repository.jpa.ReviewRepository;
+import com.udacity.course3.reviews.service.ReviewMongoService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +30,9 @@ public class ReviewsController {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private ReviewMongoService reviewMongoService;
+
     /**
      * Creates a review for a product.
      * <p>
@@ -50,12 +55,16 @@ public class ReviewsController {
             if (review.getReviewCreatedTime() == null) {
                 review.setReviewCreatedTime(LocalDateTime.now());
             }
-            // save review
+            // midterm: save review in MySQL
             Review newReview = reviewRepository.save(review);
-            return ResponseEntity.ok(newReview);
+
+            // final: save review in Mongodb
+            ReviewMongo reviewMongo = reviewMongoService.save(newReview);
+
+            return ResponseEntity.ok(reviewMongo);
         }
         else {
-            throw new HttpServerErrorException(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -68,7 +77,15 @@ public class ReviewsController {
     @RequestMapping(value = "/reviews/products/{productId}", method = RequestMethod.GET)
     @ApiOperation(value = "Lists reviews by product")
     public ResponseEntity<List<?>> listReviewsForProduct(@PathVariable("productId") Integer productId) {
+        // midterm: MySQL
         List<Review> reviews = reviewRepository.findByProductId(productId);
-        return ResponseEntity.ok(reviews);
+        // final: Mongodb
+        List<ReviewMongo> reviewsMongo = reviewMongoService.findAllByProductId(productId);
+        if (reviewsMongo != null && !reviewsMongo.isEmpty()) {
+            return ResponseEntity.ok(reviewsMongo);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

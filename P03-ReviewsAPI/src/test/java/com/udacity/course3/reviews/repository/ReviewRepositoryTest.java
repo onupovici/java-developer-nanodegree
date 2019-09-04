@@ -1,7 +1,7 @@
 package com.udacity.course3.reviews.repository;
 
-import com.udacity.course3.reviews.model.Review;
-import com.udacity.course3.reviews.repository.ReviewRepository;
+import com.udacity.course3.reviews.model.jpa.Review;
+import com.udacity.course3.reviews.repository.jpa.ReviewRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,7 +39,7 @@ public class ReviewRepositoryTest {
         // given review
         Review review = new Review();
         review.setReviewStar(5);
-        review.setReviewText("Testin review");
+        review.setReviewText("Testing review");
         review.setReviewUser("user1");
         review.setReviewCreatedTime(LocalDateTime.now());
 

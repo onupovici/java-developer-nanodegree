@@ -1,9 +1,11 @@
 package com.udacity.course3.reviews.controller;
 
-import com.udacity.course3.reviews.model.Comment;
-import com.udacity.course3.reviews.model.Review;
-import com.udacity.course3.reviews.repository.CommentRepository;
-import com.udacity.course3.reviews.repository.ReviewRepository;
+import com.udacity.course3.reviews.model.jpa.Comment;
+import com.udacity.course3.reviews.model.jpa.Review;
+import com.udacity.course3.reviews.model.mongo.CommentMongo;
+import com.udacity.course3.reviews.repository.jpa.CommentRepository;
+import com.udacity.course3.reviews.repository.jpa.ReviewRepository;
+import com.udacity.course3.reviews.service.ReviewMongoService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +31,9 @@ public class CommentsController {
     @Autowired
     private ReviewRepository reviewRepository;
 
+    @Autowired
+    private ReviewMongoService reviewMongoService;
+
     /**
      * Creates a comment for a review.
      *
@@ -50,11 +55,15 @@ public class CommentsController {
             if (comment.getCommentCreatedTime() == null) {
                 comment.setCommentCreatedTime(LocalDateTime.now());
             }
-            // save comment
+            // midterm: save comment in MySQL
             Comment newComment = commentRepository.save(comment);
-            return ResponseEntity.ok(newComment);
+
+            // final: save comment in Mongodb using productId of the review
+            CommentMongo commentMongo = reviewMongoService.saveComment(reviewId, comment);
+
+            return ResponseEntity.ok(commentMongo);
         }
-        throw new HttpServerErrorException(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -68,11 +77,13 @@ public class CommentsController {
      */
     @RequestMapping(value = "/reviews/{reviewId}", method = RequestMethod.GET)
     @ApiOperation(value = "List comments for a review")
-    public List<?> listCommentsForReview(@PathVariable("reviewId") Integer reviewId) {
+    public ResponseEntity<List<?>> listCommentsForReview(@PathVariable("reviewId") Integer reviewId) {
         Optional<Review> optionalReview = reviewRepository.findById(reviewId);
         if (optionalReview.isPresent()) {
-            return optionalReview.get().getComments();
+            // midterm: MySQL
+            List<Comment> comments = optionalReview.get().getComments();
+            return ResponseEntity.ok(comments);
         }
-        throw new HttpServerErrorException(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }
