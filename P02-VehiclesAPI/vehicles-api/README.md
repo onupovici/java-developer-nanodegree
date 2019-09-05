@@ -15,17 +15,15 @@ view of vehicle details including price and address.
 
 ## Instructions
 
-#### TODOs
-
-- Implement the `TODOs` within the `CarService.java` and `CarController.java`  files
-- Add additional tests to the `CarControllerTest.java` file based on the `TODOs`
-- Implement API documentation using Swagger
-
 #### Run the Code
 
-To properly run this application you need to start the Orders API and
-the Service API first.
+To properly run this application you need to start
 
+* eureka
+* pricing-service
+* boogle-maps
+
+Via shell it can be started using
 
 ```
 $ mvn clean package
@@ -109,3 +107,6 @@ the Vehicle information to be presented
 ### Delete a Vehicle
 
 `DELETE` `/cars/{id}`
+
+A new random price for an id is assigned when a vehicle is deleted. 
+To test, delete a vehicle and confirm new price in http://localhost:8082/h2 db dashboard.
