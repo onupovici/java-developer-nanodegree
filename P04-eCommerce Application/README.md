@@ -2,7 +2,102 @@
 
 In this project, you'll have an opportunity to demonstrate the security and DevOps skills that you learned in this lesson by completing an eCommerce application. You'll start with a template for the complete application, and your goal will be to take this template and add proper authentication and authorization controls so users can only access their data, and that data can only be accessed in a secure way. 
 
+## Table of Contents
+
+1. [Implementation](#implementation)
+1. [Operations](#operations)
+1. [Project Template](#project-template)
+1. [Testing](#testing)
+
+## Implementation
+
+### Dependencies
+
+The project requires the use of Maven, Spring Boot, and Java v8.
+
+### Run the application
+
+* Do maven clean and package code
+
+```
+$ mvn clean package
+```
+
+* Run the jar
+
+```
+$ java -jar target/auth-course-0.0.1-SNAPSHOT.jar
+```
+
+**[Back to top](#table-of-contents)**
+
+## Operations
+
+### Create user
+
+`POST` `/api/user/create`
+```json
+{
+	"username": "user",
+	"password": "password",
+	"confirmPassword": "password"
+}
+```
+
+### Retrieve user by username 
+
+`GET` `/api/user/{username}`
+
+### Retrieve user by id
+
+`GET` `/api/user/id/{id}`
+
+### Add to cart
+
+`POST` `/api/cart/addToCart`
+```json
+{
+	"username": "user",
+	"itemId": 1,
+	"quantity": 1
+}
+```
+
+### Remove from cart
+
+`POST` `/api/cart/removeFromCart`
+```json
+{
+	"username": "user",
+	"itemId": 1,
+	"quantity": 1
+}
+```
+
+### Retrieve all items
+
+`GET` `/api/item`
+
+### Retrieve items by id
+
+`GET` `/api/item/{id}`
+
+### Retrieve items by name
+
+`GET` `/api/item/name/{name}`
+
+### Submit order
+
+`POST` `/api/order/submit/{username}`
+
+### Retrieve orders for user
+
+`GET` `/api/order/history/{username}`
+
+**[Back to top](#table-of-contents)**
+
 ## Project Template
+
 First, you'll want to get set up with the template. The template is written in Java using Spring Boot, Hibernate ORM, and the H2 database. H2 is an in memory database, so if you need to retry something, every application startup is a fresh copy.
 
 To use the template, import it in the IDE of your choice as a Spring Boot application. Where required, this readme assumes the eclipse IDE.
@@ -76,5 +171,9 @@ POST /login
 
 and that should, if those are valid credentials, return a 200 OK with an Authorization header which looks like "Bearer <data>" this "Bearer <data>" is a JWT and must be sent as a Authorization header for all other rqeuests. If it's not present, endpoints should return 401 Unauthorized. If it's present and valid, the endpoints should function as normal.
 
+**[Back to top](#table-of-contents)**
+
 ## Testing
 You must implement unit tests demonstrating at least 80% code coverage.
+
+**[Back to top](#table-of-contents)**
