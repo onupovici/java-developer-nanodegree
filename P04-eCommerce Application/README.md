@@ -15,6 +15,20 @@ In this project, you'll have an opportunity to demonstrate the security and DevO
 
 The project requires the use of Maven, Spring Boot, and Java v8.
 
+### Install and Setup Splunk
+
+1. Download Splunk Trial version from [Splunk Download](https://www.splunk.com/en_us/download.html)
+1. Follow installation guide
+1. Start and show Splunk UI http://localhost:8000/en-US/app/launcher/home
+1. Login using username and password you setup during installation phase
+1. Monitor, create dashboards, and setup alerts through the Splunk UI
+
+### Install and Setup Splunk Forwarder
+
+1. Follow instructions from [Getting Data In with Forwarders](https://www.splunk.com/en_us/training/videos/getting-data-in-with-forwarders.html)
+1. Add local server: `sudo ./splunk add forward-server localhost:9997`
+1. Monitor application log: `sudo ./splunk add monitor /{path-to-application}/target/app.log`
+
 ### Run the application
 
 * Do maven clean and package code
@@ -29,9 +43,18 @@ $ mvn clean package
 $ java -jar target/auth-course-0.0.1-SNAPSHOT.jar
 ```
 
-**[Back to top](#table-of-contents)**
+## Usage
+
+* Create a user
+* Login using the new user. This will create an Auth Bearer Token that you will use
+to access other operations
+* Add headers `Authorization : Bearer <token>`
+* Add headers `Content-Type : application/json`
+* Add headers `Accept : application/json`
 
 ## Operations
+
+Ensure that 
 
 ### Create user
 
